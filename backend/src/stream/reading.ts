@@ -16,8 +16,7 @@ export interface ProcessedReading extends ReadingInput {
 }
 
 export type ValidationResult =
-  | { ok: true; reading: ReadingInput }
-  | { ok: false; error: string };
+  { ok: true; reading: ReadingInput } | { ok: false; error: string };
 
 /**
  * Only `value` and `source` are kept: the original gateway spread the whole

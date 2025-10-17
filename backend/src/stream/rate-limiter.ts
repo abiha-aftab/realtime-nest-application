@@ -1,6 +1,5 @@
 export type RateDecision =
-  | { allowed: true }
-  | { allowed: false; retryAfterMs: number };
+  { allowed: true } | { allowed: false; retryAfterMs: number };
 
 /**
  * Fixed-window counter per key. Keys are client addresses rather than socket

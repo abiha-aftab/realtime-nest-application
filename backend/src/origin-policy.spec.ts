@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { isOriginAllowed } from './origin-policy';
 
 describe('isOriginAllowed', () => {

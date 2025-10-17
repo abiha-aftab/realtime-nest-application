@@ -22,7 +22,7 @@ export type ReadingAck =
 export class ReadingGateway
   implements OnGatewayInit, OnGatewayConnection, OnModuleDestroy
 {
-  @WebSocketServer() server: Server;
+  @WebSocketServer() server!: Server;
 
   private readonly limiter: RateLimiter;
   private simulator?: NodeJS.Timeout;

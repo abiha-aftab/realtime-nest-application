@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { EventHistory } from './event-history';
 
 describe('EventHistory', () => {

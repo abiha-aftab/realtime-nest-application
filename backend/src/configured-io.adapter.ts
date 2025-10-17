@@ -11,12 +11,12 @@ export class ConfiguredIoAdapter extends IoAdapter {
     super(app);
   }
 
-  createIOServer(port: number, options?: Partial<ServerOptions>): Server {
+  createIOServer(port: number, options?: ServerOptions): Server {
     return super.createIOServer(port, {
       ...options,
       cors: { origin: this.corsOrigins },
       allowRequest: allowRequestFor(this.corsOrigins),
       maxHttpBufferSize: 16 * 1024,
-    }) as Server;
+    } as ServerOptions);
   }
 }

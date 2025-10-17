@@ -1,3 +1,4 @@
+import { afterEach, describe, expect, it } from 'vitest';
 import { mkdtempSync, writeFileSync } from 'fs';
 import type { AddressInfo } from 'net';
 import { tmpdir } from 'os';

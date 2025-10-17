@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it } from 'vitest';
 import { RateLimiter } from './rate-limiter';
 
 describe('RateLimiter', () => {
