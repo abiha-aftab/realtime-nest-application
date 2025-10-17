@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
+import { expect, test, vi } from 'vitest';
 import App from './App';
 
-jest.mock('socket.io-client', () => ({
-  io: () => ({ on: jest.fn(), off: jest.fn() }),
+vi.mock('socket.io-client', () => ({
+  io: () => ({ on: vi.fn(), off: vi.fn() }),
 }));
 
 test('renders the dashboard heading', () => {

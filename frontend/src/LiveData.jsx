@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
-const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:3000';
-const socket = io(SOCKET_URL, { transports: ['websocket', 'polling'] });
+// Unset means same origin: the Nest server in production, the Vite proxy in dev.
+const socket = io(import.meta.env.VITE_SOCKET_URL || undefined, {
+  transports: ['websocket', 'polling'],
+});
 
 export default function LiveData() {
   const [items, setItems] = useState([]);
-  const latestRef = useRef(null);
-  latestRef.current = items;
 
   useEffect(() => {
     socket.on('connect', () => console.log('connected to socket', socket.id));
