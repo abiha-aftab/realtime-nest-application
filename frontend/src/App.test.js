@@ -1,8 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+jest.mock('socket.io-client', () => ({
+  io: () => ({ on: jest.fn(), off: jest.fn() }),
+}));
+
+test('renders the dashboard heading', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /real-time dashboard/i })).toBeInTheDocument();
 });
