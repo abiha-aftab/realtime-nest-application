@@ -1,0 +1,18 @@
+services:
+  app:
+    build: .
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    environment:
+      # Extra browser origins allowed to connect (comma-separated). The page
+      # served by this container is always allowed.
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+      HISTORY_SIZE: ${HISTORY_SIZE:-100}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-10}
+      RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-10000}
+      SIMULATOR_INTERVAL_MS: ${SIMULATOR_INTERVAL_MS:-2000}
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped

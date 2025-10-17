@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+**/coverage
+**/.env
+**/.env.*
+backend/public
+backend/frontend-build
+project_venv
+.git
+.github
+docs
+Dockerfile
+compose.yaml
