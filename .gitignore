@@ -1,0 +1,42 @@
+# Python virtualenv left in the folder (not part of the project)
+project_venv/
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.next/
+# Copies of the frontend production build that the backend serves
+backend/public/
+backend/frontend-build/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Tooling
+coverage/
+.nyc_output/
+*.tsbuildinfo
+*.log
+logs/
+tmp/
+.temp/
+.tmp/
+.cache/
+.eslintcache
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
+
+# CI configuration is intentionally not tracked
+.github/
