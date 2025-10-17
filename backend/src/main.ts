@@ -1,26 +1,18 @@
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
-import { join } from 'path';
-import * as express from 'express'; 
-import { Request, Response } from 'express';
+import { loadConfig } from './config';
+import { configureApp } from './setup';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-    // Enable CORS for frontend connection
-    app.enableCors({ origin: '*' });
-
-    // Access the underlying Express instance
-    const expressApp = app.getHttpAdapter().getInstance();
-  
-    // Serve static files from React build folder
-    expressApp.use(express.static(join(__dirname, '..', 'public')));
-  
-    expressApp.get(/.*/, (req: Request, res: Response) => {
-      res.sendFile(join(__dirname, '..', 'public', 'index.html'));
-    });
-      
-  
-  await app.listen(process.env.PORT || 3000);
-  console.log(`🚀 Application is running on: http://localhost:${process.env.PORT || 3000}`);
+async function bootstrap(): Promise<void> {
+  const config = loadConfig();
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule.forConfig(config),
+  );
+  configureApp(app, config);
+  await app.listen(config.port);
+  Logger.log(`Listening on http://localhost:${config.port}`, 'Bootstrap');
 }
-bootstrap();
+
+void bootstrap();
