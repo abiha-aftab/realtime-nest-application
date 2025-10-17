@@ -10,6 +10,7 @@ import { AppModule } from '../src/app.module';
 import type { StreamConfig } from '../src/config';
 import { configureApp } from '../src/setup';
 import type { ProcessedReading } from '../src/stream/reading';
+import type { HistorySnapshot } from '../src/stream/reading-stream.service';
 
 const staticDir = mkdtempSync(join(tmpdir(), 'stream-static-'));
 writeFileSync(
@@ -60,11 +61,16 @@ describe('reading stream (e2e)', () => {
   function connectWithHistory(): Promise<{
     socket: Socket;
     history: ProcessedReading[];
+    streamId: string;
   }> {
     const socket = connect();
     return new Promise((resolve, reject) => {
-      socket.once('history', (history: ProcessedReading[]) =>
-        resolve({ socket, history }),
+      socket.once('history', (snapshot: HistorySnapshot) =>
+        resolve({
+          socket,
+          history: snapshot.readings,
+          streamId: snapshot.streamId,
+        }),
       );
       socket.once('connect_error', reject);
     });
@@ -135,7 +141,7 @@ describe('reading stream (e2e)', () => {
 
   it('replays a bounded history to clients that reconnect', async () => {
     await start();
-    const { socket } = await connectWithHistory();
+    const { socket, streamId } = await connectWithHistory();
     for (const value of [60, 70, 80, 90]) {
       await send(socket, { value });
     }
@@ -144,6 +150,18 @@ describe('reading stream (e2e)', () => {
     const { history } = await connectWithHistory();
     expect(history.map((r) => r.value)).toEqual([70, 80, 90]);
     expect(history.map((r) => r.id)).toEqual([2, 3, 4]);
+    expect((await connectWithHistory()).streamId).toBe(streamId);
+  });
+
+  it('uses a new stream id after a restart so clients can drop stale ids', async () => {
+    await start();
+    const before = (await connectWithHistory()).streamId;
+    sockets.splice(0).forEach((s) => s.disconnect());
+    await app.close();
+    await start();
+    const after = await connectWithHistory();
+    expect(after.streamId).not.toBe(before);
+    expect(after.history).toEqual([]);
   });
 
   describe('origin checks', () => {

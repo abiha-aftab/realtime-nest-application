@@ -53,7 +53,7 @@ export class ReadingGateway
 
   /** Every (re)connecting client gets the buffered history so it can fill gaps. */
   handleConnection(client: Socket): void {
-    client.emit('history', this.stream.recent());
+    client.emit('history', this.stream.snapshot());
   }
 
   @SubscribeMessage('newData')

@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import { STREAM_CONFIG, type StreamConfig } from '../config';
 import { EventHistory } from './event-history';
@@ -8,8 +9,15 @@ import {
   type ReadingInput,
 } from './reading';
 
+export interface HistorySnapshot {
+  /** Changes on every server start; ids are only unique within one stream. */
+  streamId: string;
+  readings: ProcessedReading[];
+}
+
 @Injectable()
 export class ReadingStreamService {
+  readonly streamId = randomUUID();
   private readonly history: EventHistory<ProcessedReading>;
   private nextId = 1;
 
@@ -33,5 +41,9 @@ export class ReadingStreamService {
 
   recent(): ProcessedReading[] {
     return this.history.snapshot();
+  }
+
+  snapshot(): HistorySnapshot {
+    return { streamId: this.streamId, readings: this.recent() };
   }
 }
