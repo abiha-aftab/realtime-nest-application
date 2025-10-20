@@ -4,6 +4,11 @@
     "scripts": {
     "build": "cd frontend && npm install && npm run build && cd ../backend && npm install && npm run build",
     "start": "cd backend && npm run start:prod"
+    },
+    "engines": {
+    "node": "22.x",
+    "npm": "10.x"
     }
+
   }
   
