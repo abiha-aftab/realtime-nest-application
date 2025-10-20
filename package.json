@@ -2,8 +2,8 @@
     "name": "realtime-nest-application",
     "private": true,
     "scripts": {
-      "build": "cd frontend && npm install && npm run build && cd ../backend && npm install && npm run build",
-      "start:prod": "cd backend && npm run start:prod"
+    "build": "cd frontend && npm install && npm run build && cd ../backend && npm install && npm run build",
+    "start": "cd backend && npm run start:prod"
     }
   }
   
